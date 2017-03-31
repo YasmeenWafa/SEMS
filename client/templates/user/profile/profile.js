@@ -1,3 +1,6 @@
+Template.profile.onRendered(function() {
+	$(".rating").rating();
+})
 Template.profile.helpers({
 	isCurrentUser() {
 		return Meteor.userId() === this._id;
@@ -46,6 +49,27 @@ Template.profile.helpers({
 		return bestAnswersCount;
 
 	},
+
+	calculateRating() {
+		var answersCount = this.allAnswersCount(this._id).answersCount;
+		var bestAnswersCount = this.allAnswersCount(this._id).bestAnswersCount;
+		var rating = (Number)(bestAnswersCount / answersCount) * 100;
+		var stars = 0;
+		if(rating >= 90) {
+			stars = 4
+		}
+		if(rating >= 80 && rating <= 89) {
+			stars = 3
+		}
+		if(rating >= 65 && rating <= 79) {
+			stars = 2
+		}
+		if(rating >= 50 && rating <= 64) {
+			stars = 1
+		}
+		return stars;
+	},
+
 	getSubscriptions() {
 
 
