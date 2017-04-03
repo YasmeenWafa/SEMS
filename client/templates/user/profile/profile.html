@@ -1,108 +1,108 @@
 <template name="profile">
-  <div class="ui stackable container grid">
-    <div class="twelve wide centered column">
+    <div class="ui stackable container grid">
+        <div class="twelve wide centered column">
 
-      <!-- profile -->
-      <div class="ui segment" id="profile-wrapper">
+            <!-- profile -->
+            <div class="ui segment" id="profile-wrapper">
 
+                <!-- BestAnswers -->
+                <a class="ui green big left ribbon label" title="Number of Best Answers">
+                    <i class="big trophy icon"></i>
+                    {{getBestAnswers}}</a>
 
-        <!-- BestAnswers -->
-          <a class="ui green big left ribbon label" title="Number of Best Answers"><i class="big trophy icon"></i>
-            {{getBestAnswers}}</a>
+                <!-- /BestAnswers -->
+                <!-- Team Ribbon -->
+                {{#if teamId }}
+                    <h3>
+                        <a class="ui red big center left ribbon label" href="{{pathFor 'team.info' slug=teamSlug}}" title="Team">{{teamName}}</a>
+                    </h3>
+                {{/if}}
+                <!-- /Team Ribbon -->
 
-        <!-- /BestAnswers -->
-        <!-- Team Ribbon -->
-        {{#if teamId }}
-        <h3>
-          <a class="ui red big center left ribbon label" href="{{pathFor 'team.info' slug=teamSlug}}" title="Team">{{teamName}}</a>
-        </h3>
-        {{/if}}
-        <!-- /Team Ribbon -->
+                <!-- Profile picture -->
+                {{#if Template.subscriptionsReady}}
+                    <img class="ui small centered circular image" src="{{profilePicture.url}}"/>
+                {{else}}
+                    <div class="ui active huge inline centered loader"></div>
+                {{/if}}
+                <!-- /Profile picture -->
 
+                <!-- Full Name -->
+                <h1 class="ui centered header">{{fullName}}
+                    <!-- rating-->
+                    <div class="extra">
+                        <div class="ui massive star rating" data-rating="{{calculateRating}}" style="pointer-events:none;"></div>
+                    </div>
+                    <!-- rating-->
+                </h1>
+                <!-- /Full Name -->
 
+                <!-- Tutorial Group -->
+                {{#if profile.tutorialGroup}}
+                    <h3>
+                        <i class="large green users icon" title="Tutorial Group"></i>
+                        {{profile.tutorialGroup}}
+                    </h3>
+                {{/if}}
+                <!-- /Tutorial Group -->
 
-        <!-- Profile picture -->
-        {{#if Template.subscriptionsReady}}
-          <img class="ui small centered circular image" src="{{profilePicture.url}}"/>
-        {{else}}
-          <div class="ui active huge inline centered loader"></div>
-        {{/if}}
-        <!-- /Profile picture -->
+                <!-- Mobile -->
+                {{#if profile.mobile}}
+                    <h3>
+                        <i class="large green phone square icon" title="Phone Number"></i>
+                        {{profile.mobile}}
+                    </h3>
+                {{/if}}
+                <!-- /Mobile -->
 
-        <!-- Full Name -->
-        <h1 class="ui centered header">{{fullName}}
-        </h1>
-        <!-- /Full Name -->
+                <!-- Github -->
+                {{#if profile.githubUser}}
+                    <h3>
+                        <i class="large green github square icon" title="Github Username"></i>
+                        {{profile.githubUser}}
+                    </h3>
+                {{/if}}
+                <!-- /Github -->
 
-        <!-- Tutorial Group -->
-        {{#if profile.tutorialGroup}}
-          <h3>
-            <i class="large green users icon" title="Tutorial Group"></i>
-            {{profile.tutorialGroup}}
-          </h3>
-        {{/if}}
-        <!-- /Tutorial Group -->
+                {{#if havePublicEmail}}
+                    <h3>
+                        <i class="green large mail square icon" title="Email"></i>
+                        {{email}}
+                    </h3>
+                {{/if}}
+                {{#if isCurrentUser}}
+                    {{#if haveSubscriptions}}
+                        <h3>
+                            <i class="green large tags  icon" title="Subscriptions"></i>
+                            {{#each getSubscriptions}}
+                                {{> profiletag}}
+                            {{/each}}
+                        </h3>
+                    {{/if}}
+                {{/if}}
 
-        <!-- Mobile -->
-        {{#if profile.mobile}}
-          <h3>
-            <i class="large green phone square icon" title="Phone Number"></i>
-            {{profile.mobile}}
-          </h3>
-        {{/if}}
-        <!-- /Mobile -->
+                <!-- these two lines update the followed questions in case if any question is deleted </-->
+                {{#each getFollowedQuestions}}{{/each}}
 
-        <!-- Github -->
-        {{#if profile.githubUser}}
-          <h3>
-            <i class="large green github square icon" title="Github Username"></i>
-            {{profile.githubUser}}
-          </h3>
-        {{/if}}
-        <!-- /Github -->
+                <h3>
+                    <i class="green large reply icon" title="Number of Answers"></i>
+                    {{getAnswers}}
+                </h3>
 
-        {{#if havePublicEmail}}
-          <h3>
-            <i class="green large mail square icon" title="Email"></i>
-            {{email}}
-          </h3>
-        {{/if}}
-          {{#if isCurrentUser}}
-        {{#if haveSubscriptions}}
-        <h3>
-          <i class="green large tags  icon" title="Subscriptions"></i>
-          {{#each getSubscriptions}}
-          {{> profiletag}}
-          {{/each}}
-        </h3>
-          {{/if}}
-          {{/if}}
+                {{#if isCurrentUser}}
+                    <a href="{{pathFor 'user.profile.edit'}}" class="ui yellow bottom floated fluid button">Edit your info</a>
+                {{/if}}
 
-        <!-- these two lines update the followed questions in case if any question is deleted </-->
-          {{#each getFollowedQuestions}}
-          {{/each}}
+            </div>
+            <!-- profile -->
 
-
-          <h3>
-            <i class="green large reply icon" title="Number of Answers"></i>
-            {{getAnswers}}
-          </h3>
-
-
-        {{#if isCurrentUser}}
-          <a href="{{pathFor 'user.profile.edit'}}" class="ui yellow bottom floated fluid button">Edit your info</a>
-        {{/if}}
-
-      </div>
-      <!-- profile -->
+        </div>
+    </div>
+</template>
+<template name="profiletag">
+    <div class="ui {{colorOfTag this}} transition label" name="tagName">
+        {{this}}
+        <i class="delete icon" id="deleteTag"></i>
 
     </div>
-  </div>
-</template>
-<template name = "profiletag">
-  <div class="ui {{colorOfTag this}} transition label" name="tagName">
-    {{this}}
-    <i class="delete icon" id="deleteTag"></i>
-
-  </div>
 </template>
