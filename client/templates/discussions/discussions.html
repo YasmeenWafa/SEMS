@@ -135,9 +135,25 @@
 
             <!-- Description -->
             <div class="field">
-                <label>Description</label>
-                <textarea name="description"></textarea>
+                <div class="ui top attached tabular menu">
+                    <a class="active item" id="text">
+
+                        <label>Description</label>
+                    </a>
+                    <a class="item" id="preview">
+                        <label>Preview</label>
+                    </a>
+                </div>
+                <div class="ui bottom attached segment">
+                    <textarea name="description" placeholder="Description" id="description"></textarea>
+
+                    <label id="previewText">
+                        {{#markdown}}{{description}}{{/markdown}}
+                    </label>
+
+                </div>
             </div>
+
             <!-- /Description -->
 
             <!-- Tags -->
