@@ -130,7 +130,10 @@ Template.editAnnouncement.events({
 				$('.selection.dropdown').removeClass('disabled');
 				setTimeout(function() {
 					$('#announcement-edit-modal').modal('hide');
-				}, 750);
+				}, 50);
+				//there is a problem with modal hiding
+
+				Router.go(Router.current().route.getName())
 			}
 		});
 
