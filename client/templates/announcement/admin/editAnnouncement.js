@@ -1,9 +1,16 @@
 Template.editAnnouncement.helpers({
 	availableTeams() {
-		return Teams.find();
+		return Teams.find({
+			isForStaff: false
+		});
 	},
-	staffTeams() {
-		return StaffTeams.find();
+	description() {
+		return Session.get('description')
+	},
+	staffGroups() {
+		return Teams.find({
+			isForStaff: true
+		});
 	},
 
 	currentAnnouncementDropdownFormatted(teams) {
@@ -32,6 +39,21 @@ Template.editAnnouncement.helpers({
 
 });
 
+Template.editAnnouncement.onCreated(function() {
+
+	$('#preview').click(function() {
+		$('.active').removeClass('active');
+		$(this).addClass('active');
+	});
+
+	$('#text').click(function() {
+		$('.active').removeClass('active');
+		$(this).addClass('active');
+	});
+
+
+
+})
 Template.editAnnouncement.onRendered(function() {
 	$(document)
 		.ready(function() {
@@ -57,6 +79,19 @@ Template.editAnnouncement.onRendered(function() {
 					}
 				});
 		});
+
+	$('#preview').click(function() {
+		$('.active').removeClass('active');
+		$(this).addClass('active');
+	});
+
+	$('#text').click(function() {
+		$('.active').removeClass('active');
+		$(this).addClass('active');
+	});
+
+
+
 
 	$('.ui.dropdown').dropdown();
 	$('.ui.checkbox').checkbox();
@@ -95,7 +130,10 @@ Template.editAnnouncement.events({
 				$('.selection.dropdown').removeClass('disabled');
 				setTimeout(function() {
 					$('#announcement-edit-modal').modal('hide');
-				}, 750);
+				}, 50);
+				//there is a problem with modal hiding
+
+				Router.go(Router.current().route.getName())
 			}
 		});
 
@@ -109,5 +147,30 @@ Template.editAnnouncement.events({
 			$('.selection.dropdown').removeClass('disabled');
 
 	},
+
+	'click #preview ': function(event) {
+
+
+		$('.active').removeClass('active');
+		$('#preview').addClass('active');
+
+		var description = $('#description').val();
+		console.log(description);
+		$('#previewText').show()
+		$('#description').hide()
+		Session.set('description', description)
+
+	},
+	'click #text ': function(event) {
+
+
+
+
+		$('.active').removeClass('active');
+		$('#text').addClass('active');
+
+		$('#description').show()
+		$('#previewText').hide()
+	}
 
 })

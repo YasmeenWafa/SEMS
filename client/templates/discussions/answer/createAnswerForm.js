@@ -1,3 +1,16 @@
+Template.createAnswerForm.onRendered(function() {
+
+	$('#text').click(function() {
+		$('.active').removeClass('active');
+		$(this).addClass('active');
+	});
+	$('#preview').click(function() {
+		$('.active').removeClass('active');
+		$(this).addClass('active');
+	});
+
+})
+
 Template.createAnswerForm.helpers({
 	questionClosed() {
 		let questionId = Template.parentData(1)._id;
@@ -6,6 +19,9 @@ Template.createAnswerForm.helpers({
 		})
 		return !(question.isClosed())
 
+	},
+	description() {
+		return Session.get('description')
 	}
 })
 
@@ -33,5 +49,21 @@ Template.createAnswerForm.events({
 		});
 
 	},
+
+	'click #preview ': function(event) {
+
+
+		var description = $('#description').val();
+		console.log(description);
+		$('#previewText').show()
+		$('#description').hide()
+		Session.set('description', description)
+
+	},
+	'click #text ': function(event) {
+
+		$('#description').show()
+		$('#previewText').hide()
+	}
 
 });

@@ -133,7 +133,7 @@ Meteor.methods({
 				let members = group.members;
 				let icon = "<i class=\"hand peace icon\"></i>";
 				let content = "The post ( " + title + " ) on your group has been updated";
-				let link = `/staff-groups/${group.name}/posts`;
+				let link = `/staff-groups/${group.slug}/posts`;
 				for(var i = 0; i < members.length; i++) {
 					if(members[i] != Meteor.userId()) {
 						Notifications.insert({

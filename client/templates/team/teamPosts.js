@@ -1,4 +1,19 @@
-Template.teamPosts.onRendered(function() {
+Template.createPost.onRendered(function() {
+	$('#preview').click(function() {
+		$('.active').removeClass('active');
+		$(this).addClass('active');
+	});
+
+	$('#text').click(function() {
+		$('.active').removeClass('active');
+		$(this).addClass('active');
+	});
+})
+Template.createPost.helpers({
+
+	description() {
+		return Session.get('description')
+	}
 
 })
 Template.teamPosts.helpers({
@@ -28,7 +43,8 @@ Template.teamPosts.helpers({
 		} else {
 			return false;
 		}
-	}
+	},
+
 
 })
 
@@ -79,13 +95,34 @@ Template.createPost.events({
 		Meteor.call('createPost', Post, function(err) {
 			if(err) {
 				sAlert.error(err.reason)
+			} else {
+				event.target.description.value = '';
+				event.target.title.value = '';
+				$('#post-create-modal').modal('hide');
+				//there is a problem with modal hiding
+				sAlert.success("Your post was added successfully")
+				Router.go(Router.current().route.getName())
 			}
 		})
-		event.target.description.value = '';
-		event.target.title.value = '';
-		$('#post-create-modal').modal('hide');
+
 
 	},
+
+	'click #preview ': function(event) {
+
+
+		var description = $('#description').val();
+		console.log(description);
+		$('#previewText').show()
+		$('#description').hide()
+		Session.set('description', description)
+
+	},
+	'click #text ': function(event) {
+
+		$('#description').show()
+		$('#previewText').hide()
+	}
 })
 Template.EditPost.events({
 	'submit #editForm': function(event) {
@@ -108,11 +145,17 @@ Template.EditPost.events({
 		Meteor.call('updatePost', Post, function(err) {
 			if(err) {
 				sAlert.error(err.reason)
+			} else {
+				event.target.description.value = '';
+				event.target.title.value = '';
+				$('#post-edit-modal').modal('hide');
+				//there is a problem with modal hiding
+
+				sAlert.success("Your post was edited successfully")
+				Router.go(Router.current().route.getName())
 			}
 		})
-		event.target.description.value = '';
-		event.target.title.value = '';
-		$('#post-edit-modal').modal('hide');
+
 
 	},
 

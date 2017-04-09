@@ -15,10 +15,27 @@
             <!-- /Announcement Title -->
 
             <!-- Announcement Description -->
+
             <div class="field">
-                <label>Description</label>
-                <textarea name="description" value="{{description}}" placeholder="Description"></textarea>
+                <div class="ui top attached tabular menu">
+                    <a class="active item" id="text">
+
+                        <label>Description</label>
+                    </a>
+                    <a class="item" id="preview">
+                        <label>Preview</label>
+                    </a>
+                </div>
+                <div class="ui bottom attached segment">
+                    <textarea name="description" placeholder="Description" id="description" value="{{description}}" text="{{description}}"></textarea>
+
+                    <label id="previewText">
+                        {{#markdown}}{{description}}{{/markdown}}
+                    </label>
+
+                </div>
             </div>
+
             <!-- /Announcement Description -->
 
             <!-- Company Selection -->
@@ -33,8 +50,8 @@
                         {{#each availableTeams}}
                             <div class="item" data-value="{{_id}}">{{companyName}}</div>
                         {{/each}}
-                        <div class="header">Staff Teams</div>
-                        {{#each staffTeams}}
+                        <div class="header">Staff Groups</div>
+                        {{#each staffGroups}}
                             <div class="item" data-value="{{_id}}">{{name}}</div>
                         {{/each}}
                     </div>
