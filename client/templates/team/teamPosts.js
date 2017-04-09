@@ -95,11 +95,16 @@ Template.createPost.events({
 		Meteor.call('createPost', Post, function(err) {
 			if(err) {
 				sAlert.error(err.reason)
+			} else {
+				event.target.description.value = '';
+				event.target.title.value = '';
+				$('#post-create-modal').modal('hide');
+				//there is a problem with modal hiding
+				sAlert.success("Your post was added successfully")
+				Router.go(Router.current().route.getName())
 			}
 		})
-		event.target.description.value = '';
-		event.target.title.value = '';
-		$('#post-create-modal').modal('hide');
+
 
 	},
 
@@ -140,11 +145,17 @@ Template.EditPost.events({
 		Meteor.call('updatePost', Post, function(err) {
 			if(err) {
 				sAlert.error(err.reason)
+			} else {
+				event.target.description.value = '';
+				event.target.title.value = '';
+				$('#post-edit-modal').modal('hide');
+				//there is a problem with modal hiding
+
+				sAlert.success("Your post was edited successfully")
+				Router.go(Router.current().route.getName())
 			}
 		})
-		event.target.description.value = '';
-		event.target.title.value = '';
-		$('#post-edit-modal').modal('hide');
+
 
 	},
 

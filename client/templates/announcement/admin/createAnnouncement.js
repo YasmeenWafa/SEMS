@@ -84,10 +84,12 @@ Template.createAnnouncement.events({
 				});
 			} else {
 				sAlert.success('Your Announcement is published successfully !');
-				$('#announcement-create-modal').modal('hide');
-				//$('.ui.form').form('reset');
-				//$('.selection.dropdown').removeClass('disabled');
 
+				$('.ui.form').form('reset');
+				$('.selection.dropdown').removeClass('disabled');
+				$('#announcement-create-modal').modal('hide');
+				//there is a problem with modal hiding
+				Router.go(Router.current().route.getName())
 			}
 		});
 
