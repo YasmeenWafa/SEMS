@@ -1,4 +1,19 @@
-Template.teamPosts.onRendered(function() {
+Template.createPost.onRendered(function() {
+	$('#preview').click(function() {
+		$('.active').removeClass('active');
+		$(this).addClass('active');
+	});
+
+	$('#text').click(function() {
+		$('.active').removeClass('active');
+		$(this).addClass('active');
+	});
+})
+Template.createPost.helpers({
+
+	description() {
+		return Session.get('description')
+	}
 
 })
 Template.teamPosts.helpers({
@@ -28,7 +43,8 @@ Template.teamPosts.helpers({
 		} else {
 			return false;
 		}
-	}
+	},
+
 
 })
 
@@ -86,6 +102,22 @@ Template.createPost.events({
 		$('#post-create-modal').modal('hide');
 
 	},
+
+	'click #preview ': function(event) {
+
+
+		var description = $('#description').val();
+		console.log(description);
+		$('#previewText').show()
+		$('#description').hide()
+		Session.set('description', description)
+
+	},
+	'click #text ': function(event) {
+
+		$('#description').show()
+		$('#previewText').hide()
+	}
 })
 Template.EditPost.events({
 	'submit #editForm': function(event) {

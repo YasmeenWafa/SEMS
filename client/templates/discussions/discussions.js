@@ -40,14 +40,27 @@ Template.discussions.onRendered(function() {
 		}
 	});
 
-	$('.ui.dropdown').dropdown({
-		allowAdditions: true,
-		direction: 'downward'
+
+
+	$('#text').click(function() {
+		$('.active').removeClass('active');
+		$(this).addClass('active');
 	});
+	$('#preview').click(function() {
+		$('.active').removeClass('active');
+		$(this).addClass('active');
+	});
+
+	$('#previewText').hide()
+	Session.set('description', "nothing to preview")
 
 	//clear current question search on rendered
 	QuestionsIndex.getComponentMethods().search('');
 
+	$('.ui.dropdown').dropdown({
+		allowAdditions: true,
+		direction: 'downward'
+	});
 });
 
 Template.discussions.events({
@@ -130,6 +143,23 @@ Template.discussions.events({
 
 
 
+	},
+	'click #preview ': function(event) {
+
+
+		var description = $('#description').val();
+		console.log(description);
+		$('#previewText').show()
+		$('#description').hide()
+		Session.set('description', description)
+
+
+
+	},
+	'click #text ': function(event) {
+
+		$('#description').show()
+		$('#previewText').hide()
 	}
 
 
@@ -199,6 +229,9 @@ Template.questionForm.helpers({
 		return Tags.find({});
 
 	},
+	description() {
+		return Session.get('description')
+	}
 
 });
 
