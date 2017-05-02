@@ -2,6 +2,7 @@ Session.setDefault('pageSize', 15);
 Session.setDefault('page', 0);
 //Session.setDefault('loading', true);
 Session.setDefault('tag', 'All');
+Session.setDefault('pageNumber', 1);
 Template.questionForm.onCreated(function() {
 	var template = this;
 	template.input = new ReactiveVar('')
@@ -13,6 +14,7 @@ Template.questionForm.onCreated(function() {
 
 })
 Template.discussions.onRendered(function() {
+	Meteor.subscribe('questionsBasicInfo', 1, 10)
 	$('.ui.accordion').accordion();
 	$('.ui.form').form({
 		inline: true,
@@ -57,6 +59,7 @@ Template.discussions.onRendered(function() {
 
 	//clear current question search on rendered
 	QuestionsIndex.getComponentMethods().search('');
+
 
 });
 
@@ -250,7 +253,11 @@ Template.questionsSearchBox.helpers({
 
 		if(tagName[0] === "All") {
 
-
+			console.log(Questions.find({}, {
+				sort: {
+					createdAt: -1
+				}
+			}).fetch())
 			return Questions.find({}, {
 				sort: {
 					createdAt: -1
@@ -266,6 +273,13 @@ Template.questionsSearchBox.helpers({
 				}
 			}).fetch();
 		}
+	},
+
+	moreThanTenQuestions() {
+		return Questions.find({}).count() > 10
+	},
+	questionsNotEmpty() {
+		return Questions.find({}).count > 0
 	},
 
 	questionsIndex() {
@@ -295,7 +309,13 @@ Template.questionsSearchBox.events({
 			$('.ui.question.search').search('hide results');
 		}
 
-	}, 200)
+	}, 200),
+	'click #page': function(event) {
+		var currentPage = Session.get('pageNumber');
+		var nextPage = currentPage++;
+		Session.set('pageNumber', nextPage)
+		Meteor.subscribe('questionsBasicInfo', ((currentPage * 10) + 1), (nextPage * 10))
+	}
 });
 
 Template.filterTag.helpers({

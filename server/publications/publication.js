@@ -115,7 +115,14 @@ Meteor.publish('questionsNewsFeed', function() {
 		}
 	});
 });
-Meteor.publish('questionsBasicInfo', function() {
+Meteor.publish('questionsBasicInfo', function(start, end) {
+	var options = {
+		"sort": {
+			createdAt: -1
+		},
+		"skip": start,
+		"limit": 9
+	}
 	return Questions.find({}, {
 		fields: {
 			slug: 1,
@@ -128,7 +135,8 @@ Meteor.publish('questionsBasicInfo', function() {
 			tags: 1,
 			answers: 1
 		}
-	});
+	}, options);
+
 });
 
 Meteor.publish('questionsIds', function() {

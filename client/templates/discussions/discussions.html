@@ -215,6 +215,16 @@
       {{#each questionsTags}}
         {{> question}}
       {{/each}}
+      <div class="ui pagination menu">
+        <a class="active item">
+          1
+        </a>
+        {{#if moreThanTenQuestions}}
+          <a class="item" id="page">Next</a>
+        {{/if}}
+
+      </div>
+
     </div>
 
     {{#EasySearch.IfInputEmpty index=questionsIndex}}
