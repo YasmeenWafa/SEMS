@@ -215,15 +215,11 @@
       {{#each questionsTags}}
         {{> question}}
       {{/each}}
-      <div class="ui pagination menu">
-        <a class="active item" id="first">
-          1
-        </a>
-
-        <a class="item" id="page">Next</a>
-
+      <div align="center">
+        <button id="load" class="ui center aligned primary button">
+          Load more
+        </button>
       </div>
-
     </div>
 
     {{#EasySearch.IfInputEmpty index=questionsIndex}}

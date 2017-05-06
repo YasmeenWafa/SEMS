@@ -115,7 +115,7 @@ Meteor.publish('questionsNewsFeed', function() {
 		}
 	});
 });
-Meteor.publish('questionsBasicInfo', function(start) {
+Meteor.publish('questionsBasicInfo', function(limit) {
 
 	return Questions.find({}, {
 		fields: {
@@ -132,8 +132,7 @@ Meteor.publish('questionsBasicInfo', function(start) {
 		sort: {
 			createdAt: -1
 		},
-		skip: start,
-		limit: 10,
+		limit: limit,
 	});
 
 });

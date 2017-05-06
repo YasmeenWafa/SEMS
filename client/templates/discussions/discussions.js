@@ -2,7 +2,8 @@ Session.setDefault('pageSize', 15);
 Session.setDefault('page', 0);
 //Session.setDefault('loading', true);
 Session.setDefault('tag', 'All');
-Session.setDefault('pageNumber', 1);
+Session.setDefault('limit', 10);
+
 Template.questionForm.onCreated(function() {
 	var template = this;
 	template.input = new ReactiveVar('')
@@ -14,8 +15,12 @@ Template.questionForm.onCreated(function() {
 
 })
 Template.questionsSearchBox.onCreated(function() {
-
-	Meteor.subscribe('questionsBasicInfo', (0))
+	Session.setDefault('difference', -1)
+	Session.setDefault('currentCount', -1)
+	var subscription = Meteor.subscribe('questionsBasicInfo', (Session.get('limit')))
+	if(subscription.ready()) {
+		Session.set('currentCount', Questions.find({}).count())
+	}
 
 })
 Template.discussions.onRendered(function() {
@@ -308,13 +313,20 @@ Template.questionsSearchBox.events({
 		}
 
 	}, 200),
-	'click #page': function(event) {
-		$('#page').addClass('active');
-		$('#first').removeClass('active');
-		var currentPage = Session.get('pageNumber');
-		var nextPage = currentPage++;
-		Session.set('pageNumber', nextPage)
-		Meteor.subscribe('questionsBasicInfo', (currentPage * 10))
+	'click #load': function(event) {
+
+		var currentLimit = Session.get('limit');
+		var nextLimit = currentLimit + 10;
+		Session.set('limit', nextLimit)
+		var subscription = Meteor.subscribe('questionsBasicInfo', (nextLimit))
+		if(subscription.ready()) {
+			var newCount = Questions.find({}).count();
+			Session.set('difference', newCount - Session.get('currentCount'))
+			Session.set('currentCount', newCount)
+			if(Session.get('difference') == 0) {
+				$('#load').addClass('disabled');
+			}
+		}
 	}
 });
 
