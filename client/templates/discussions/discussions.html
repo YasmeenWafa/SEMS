@@ -216,12 +216,11 @@
         {{> question}}
       {{/each}}
       <div class="ui pagination menu">
-        <a class="active item">
+        <a class="active item" id="first">
           1
         </a>
-        {{#if moreThanTenQuestions}}
-          <a class="item" id="page">Next</a>
-        {{/if}}
+
+        <a class="item" id="page">Next</a>
 
       </div>
 
