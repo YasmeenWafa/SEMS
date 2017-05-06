@@ -18,7 +18,7 @@ Template.questionsSearchBox.onCreated(function() {
 	Session.setDefault('difference', -1)
 	Session.setDefault('currentCount', -1)
 	var subscription = Meteor.subscribe('questionsBasicInfo', (Session.get('limit')))
-	if(subscription.ready()) {
+	if(Template.instance().subscriptionsReady()) {
 		Session.set('currentCount', Questions.find({}).count())
 	}
 
@@ -259,7 +259,6 @@ Template.questionsSearchBox.helpers({
 
 	questionsTags() {
 		var tagName = Session.get('tag').replace(/(\r\n|\n|\r)/gm, "<br />").split("<br />")
-		console.log(Questions.find({}).fetch())
 		if(tagName[0] === "All") {
 			return Questions.find({}, {
 				sort: {
@@ -313,20 +312,23 @@ Template.questionsSearchBox.events({
 		}
 
 	}, 200),
-	'click #load': function(event) {
+	'click #load': function(event, template) {
 
 		var currentLimit = Session.get('limit');
 		var nextLimit = currentLimit + 10;
 		Session.set('limit', nextLimit)
 		var subscription = Meteor.subscribe('questionsBasicInfo', (nextLimit))
-		if(subscription.ready()) {
+
+		if(template.subscriptionsReady()) {
 			var newCount = Questions.find({}).count();
 			Session.set('difference', newCount - Session.get('currentCount'))
 			Session.set('currentCount', newCount)
 			if(Session.get('difference') == 0) {
 				$('#load').addClass('disabled');
+				sAlert.error('No more questions');
 			}
 		}
+
 	}
 });
 

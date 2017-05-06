@@ -357,9 +357,14 @@ Meteor.publish('postsSpecific', function(teamSlug) {
 Meteor.publish('newsFeed', function() {
 	return NewsFeed.find({});
 })
-Meteor.publish('newsFeedSpecific', function(userId) {
+Meteor.publish('newsFeedSpecific', function(userId, limit) {
 	return NewsFeed.find({
 		feedOwnerId: userId
+	}, {
+		sort: {
+			createdAt: -1
+		},
+		limit: limit
 	});
 })
 Meteor.publish('newsFeedBasic', function() {

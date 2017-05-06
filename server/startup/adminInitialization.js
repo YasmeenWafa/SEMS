@@ -1,41 +1,55 @@
 Meteor.startup(function() {
-    if (Meteor.users.find().count() === 0) {
-        // Creating a random password
-        var pass = Random.id(20);
 
-        // Creating the great admin
-        var userId = Accounts.createUser({
-            email: Meteor.settings.adminEmail,
-            password: pass,
-            profile: {
-                firstName: 'System',
-                lastName: 'Admin',
-                GUCId: '00-00000',
-                tutorialGroup: 'Adminstration',
-            }
-        });
+	for(var i = 0; i < 30; i++) {
+		NewsFeed.insert({
+			feedOwnerId: "AN3xqZHaQNmJ4nghe",
+			eventOwnerId: "v9XWPKQ7BapnNGY2F",
+			content: "says hi",
+			type: "question",
+			objectId: "Gs7DRPoyPabaAJJYx",
+			parentObjectId: "kkkkkkkkkkk",
+			link: "/discussions",
+			createdAt: Date.now()
+
+		})
+	}
+	if(Meteor.users.find().count() === 0) {
+		// Creating a random password
+		var pass = Random.id(20);
+
+		// Creating the great admin
+		var userId = Accounts.createUser({
+			email: Meteor.settings.adminEmail,
+			password: pass,
+			profile: {
+				firstName: 'System',
+				lastName: 'Admin',
+				GUCId: '00-00000',
+				tutorialGroup: 'Adminstration',
+			}
+		});
 
 
-        if (userId) {
-            // Make em an admin !
-            Roles.addUsersToRoles(userId, ADMIN);
+		if(userId) {
+			// Make em an admin !
+			Roles.addUsersToRoles(userId, ADMIN);
 
-            // He is a verified user for sure !
-            Meteor.users.update(userId, {
-                $set: {
-                    'emails.0.verified': true
-                }
-            });
+			// He is a verified user for sure !
+			Meteor.users.update(userId, {
+				$set: {
+					'emails.0.verified': true
+				}
+			});
 
-            Email.send({
-                to: Meteor.settings.adminEmail,
-                from: Meteor.settings.systemEmail,
-                subject: "[SEMS] Welcome Adminstrator",
-                text: `Hello Admin, your account is created with the following password: ${pass}\nPlease Change your password after logging in`
-            });
+			Email.send({
+				to: Meteor.settings.adminEmail,
+				from: Meteor.settings.systemEmail,
+				subject: "[SEMS] Welcome Adminstrator",
+				text: `Hello Admin, your account is created with the following password: ${pass}\nPlease Change your password after logging in`
+			});
 
-        }
+		}
 
-    }
+	}
 
 });

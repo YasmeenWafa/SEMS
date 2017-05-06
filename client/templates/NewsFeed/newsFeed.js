@@ -1,3 +1,34 @@
+Session.setDefault('limit', 10);
+
+Template.newsFeed.onCreated(function() {
+	Session.setDefault('difference', -1)
+	Session.setDefault('currentCount', -1)
+	var subscription = Meteor.subscribe('newsFeedSpecific', (Meteor.userId()), (Session.get('limit')))
+	if(Template.instance().subscriptionsReady()) {
+		Session.set('currentCount', NewsFeed.find({}).count())
+	}
+})
+Template.newsFeed.events({
+
+	'click #load': function(event, template) {
+
+		var currentLimit = Session.get('limit');
+		var nextLimit = currentLimit + 10;
+		Session.set('limit', nextLimit)
+		var subscription = Meteor.subscribe('newsFeedSpecific', (Meteor.userId()), (nextLimit))
+		if(template.subscriptionsReady()) {
+			var newCount = NewsFeed.find({}).count();
+			Session.set('difference', newCount - Session.get('currentCount'))
+			Session.set('currentCount', newCount)
+			if(Session.get('difference') == 0) {
+				$('#load').addClass('disabled');
+				sAlert.error('No more feed');
+			}
+		}
+
+	}
+})
+
 Template.newsFeed.helpers({
 
 	fullName() {
