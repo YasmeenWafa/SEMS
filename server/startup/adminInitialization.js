@@ -1,18 +1,4 @@
 Meteor.startup(function() {
-
-	for(var i = 0; i < 30; i++) {
-		NewsFeed.insert({
-			feedOwnerId: "AN3xqZHaQNmJ4nghe",
-			eventOwnerId: "v9XWPKQ7BapnNGY2F",
-			content: "says hi",
-			type: "question",
-			objectId: "Gs7DRPoyPabaAJJYx",
-			parentObjectId: "kkkkkkkkkkk",
-			link: "/discussions",
-			createdAt: Date.now()
-
-		})
-	}
 	if(Meteor.users.find().count() === 0) {
 		// Creating a random password
 		var pass = Random.id(20);
