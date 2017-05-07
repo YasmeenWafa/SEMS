@@ -1,65 +1,65 @@
 <template name="header">
-    <!-- Header -->
-    <div class="ui large top hidden menu">
+  <!-- Header -->
+  <div class="ui large top hidden menu">
 
-        <!--Container-->
-        <div class="ui container">
-            <a class="item {{isActive 'home'}}" href="{{pathFor 'home'}}">Home</a>
+    <!--Container-->
+    <div class="ui container">
+      <a class="item {{isActive 'home'}}" href="{{pathFor 'home'}}">Home</a>
 
-            <!-- Admin Panel Button (only visible to admin)-->
-            {{#if isInRole "admin"}}
-                <a href="{{pathFor 'admin.panel'}}" class="item {{isActive 'admin.panel'}}">Admin</a>
-            {{/if}}
-            <!-- /Admin Panel-->
+      <!-- Admin Panel Button (only visible to admin)-->
+      {{#if isInRole "admin"}}
+        <a href="{{pathFor 'admin.panel'}}" class="item {{isActive 'admin.panel'}}">Admin</a>
+      {{/if}}
+      <!-- /Admin Panel-->
 
-            <!-- Schdeule Button-->
-            <a class="item {{isActive 'schedule'}}" href="{{pathFor 'schedule'}}">Schedule</a>
-            <!-- /Schdeule Button-->
+      <!-- Schdeule Button-->
+      <a class="item {{isActive 'schedule'}}" href="{{pathFor 'schedule'}}">Schedule</a>
+      <!-- /Schdeule Button-->
 
-            <!-- Team Button-->
-            {{#if currentUser}}
-                <a class="item {{isActive 'team.browse'}}" href="{{pathFor 'team.browse'}}">Teams</a>
-            {{/if}}
-            <!-- /Team Button-->
+      <!-- Team Button-->
+      {{#if currentUser}}
+        <a class="item {{isActive 'team.browse'}}" href="{{pathFor 'team.browse'}}">Teams</a>
+      {{/if}}
+      <!-- /Team Button-->
 
-            <!-- staff group Button-->
-            {{#if isInRole "admin,teaching-assistant,junior-teaching-assistant,lecturer"}}
-                <a class="item {{isActive 'staffGroups.browse'}}" href="{{pathFor 'staffGroups.browse'}}">Staff Groups</a>
-            {{/if}}
-            <!-- /staff group Button-->
+      <!-- staff group Button-->
+      {{#if isInRole "admin,teaching-assistant,junior-teaching-assistant,lecturer"}}
+        <a class="item {{isActive 'staffGroups.browse'}}" href="{{pathFor 'staffGroups.browse'}}">Staff Groups</a>
+      {{/if}}
+      <!-- /staff group Button-->
 
-            <!-- Discussions Button-->
-            {{#if currentUser}}
-                <a class="item {{isActive 'discussions'}}" href="{{pathFor 'discussions'}}">Discussions</a>
-            {{/if}}
-            <!-- /Discussions Button-->
+      <!-- Discussions Button-->
+      {{#if currentUser}}
+        <a class="item {{isActive 'discussions'}}" href="{{pathFor 'discussions'}}">Discussions</a>
+      {{/if}}
+      <!-- /Discussions Button-->
 
-            <!-- Hall of Fame Button-->
+      <!-- Hall of Fame Button-->
 
-            <a class="item {{isActive 'hallOfFame'}}" href="{{pathFor 'hallOfFame'}}">Hall of Fame</a>
+      <a class="item {{isActive 'hallOfFame'}}" href="{{pathFor 'hallOfFame'}}">Hall of Fame</a>
 
-            <!-- /Hall of Fame Button-->
+      <!-- /Hall of Fame Button-->
 
-            <div class="right menu">
-                {{#if currentUser}}
-                    {{> userView}}
-                {{else}}
+      <div class="right menu">
+        {{#if currentUser}}
+          {{> userView}}
+        {{else}}
 
-                    <!-- LogIn Button-->
-                    <div class="item">
-                        <a class="ui button" href="{{pathFor 'user.login'}}">Login</a>
-                    </div>
-                    <!-- /LogIn Button-->
+          <!-- LogIn Button-->
+          <div class="item">
+            <a class="ui button" href="{{pathFor 'user.login'}}">Login</a>
+          </div>
+          <!-- /LogIn Button-->
 
-                    <!-- Register Button-->
-                    <div class="item">
-                        <a class="ui primary button" href="{{pathFor 'user.register'}}">Sign Up</a>
-                    </div>
-                    <!-- /Register Button-->
-                {{/if}}
-            </div>
-        </div>
-        <!-- Container -->
+          <!-- Register Button-->
+          <div class="item">
+            <a class="ui primary button" href="{{pathFor 'user.register'}}">Sign Up</a>
+          </div>
+          <!-- /Register Button-->
+        {{/if}}
+      </div>
     </div>
-    <!-- /Header-->
+    <!-- Container -->
+  </div>
+  <!-- /Header-->
 </template>

@@ -1,26 +1,27 @@
-Session.setDefault('limit', 10);
+Session.setDefault('limitNews', 10);
+Session.setDefault('differenceNews', -1)
+Session.setDefault('currentCountNews', -1)
 
 Template.newsFeed.onCreated(function() {
-	Session.setDefault('difference', -1)
-	Session.setDefault('currentCount', -1)
-	var subscription = Meteor.subscribe('newsFeedSpecific', (Meteor.userId()), (Session.get('limit')))
+
+	var subscription = Meteor.subscribe('newsFeedSpecific', (Meteor.userId()), (Session.get('limitNews')))
 	if(Template.instance().subscriptionsReady()) {
-		Session.set('currentCount', NewsFeed.find({}).count())
+		Session.set('currentCountNews', NewsFeed.find({}).count())
 	}
 })
 Template.newsFeed.events({
 
 	'click #load': function(event, template) {
-
-		var currentLimit = Session.get('limit');
+		event.preventDefault()
+		var currentLimit = Session.get('limitNews');
 		var nextLimit = currentLimit + 10;
-		Session.set('limit', nextLimit)
+		Session.set('limitNews', nextLimit)
 		var subscription = Meteor.subscribe('newsFeedSpecific', (Meteor.userId()), (nextLimit))
 		if(template.subscriptionsReady()) {
 			var newCount = NewsFeed.find({}).count();
-			Session.set('difference', newCount - Session.get('currentCount'))
-			Session.set('currentCount', newCount)
-			if(Session.get('difference') == 0) {
+			Session.set('differenceNews', newCount - Session.get('currentCountNews'))
+			Session.set('currentCountNews', newCount)
+			if(Session.get('differenceNews') == 0) {
 				$('#load').addClass('disabled');
 				sAlert.error('No more feed');
 			}

@@ -3,6 +3,8 @@ Session.setDefault('page', 0);
 //Session.setDefault('loading', true);
 Session.setDefault('tag', 'All');
 Session.setDefault('limit', 10);
+Session.setDefault('difference', -1)
+Session.setDefault('currentCount', -1)
 
 Template.questionForm.onCreated(function() {
 	var template = this;
@@ -15,8 +17,7 @@ Template.questionForm.onCreated(function() {
 
 })
 Template.questionsSearchBox.onCreated(function() {
-	Session.setDefault('difference', -1)
-	Session.setDefault('currentCount', -1)
+
 	var subscription = Meteor.subscribe('questionsBasicInfo', (Session.get('limit')))
 	if(Template.instance().subscriptionsReady()) {
 		Session.set('currentCount', Questions.find({}).count())
@@ -68,8 +69,6 @@ Template.discussions.onRendered(function() {
 
 	//clear current question search on rendered
 	QuestionsIndex.getComponentMethods().search('');
-
-
 });
 
 Template.discussions.events({
@@ -313,7 +312,7 @@ Template.questionsSearchBox.events({
 
 	}, 200),
 	'click #load': function(event, template) {
-
+		event.preventDefault()
 		var currentLimit = Session.get('limit');
 		var nextLimit = currentLimit + 10;
 		Session.set('limit', nextLimit)
