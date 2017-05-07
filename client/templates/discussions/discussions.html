@@ -215,6 +215,11 @@
       {{#each questionsTags}}
         {{> question}}
       {{/each}}
+      <div align="center">
+        <button id="load" class="ui center aligned primary button">
+          Load more
+        </button>
+      </div>
     </div>
 
     {{#EasySearch.IfInputEmpty index=questionsIndex}}

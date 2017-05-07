@@ -121,7 +121,8 @@ Meteor.publish('questionsNewsFeed', function() {
 		}
 	});
 });
-Meteor.publish('questionsBasicInfo', function() {
+Meteor.publish('questionsBasicInfo', function(limit) {
+
 	return Questions.find({}, {
 		fields: {
 			slug: 1,
@@ -133,8 +134,13 @@ Meteor.publish('questionsBasicInfo', function() {
 			viewers: 1,
 			tags: 1,
 			answers: 1
-		}
+		},
+		sort: {
+			createdAt: -1
+		},
+		limit: limit,
 	});
+
 });
 
 Meteor.publish('questionsIds', function() {
@@ -357,9 +363,14 @@ Meteor.publish('postsSpecific', function(teamSlug) {
 Meteor.publish('newsFeed', function() {
 	return NewsFeed.find({});
 })
-Meteor.publish('newsFeedSpecific', function(userId) {
+Meteor.publish('newsFeedSpecific', function(userId, limit) {
 	return NewsFeed.find({
 		feedOwnerId: userId
+	}, {
+		sort: {
+			createdAt: -1
+		},
+		limit: limit
 	});
 })
 Meteor.publish('newsFeedBasic', function() {

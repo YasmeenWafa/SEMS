@@ -2,6 +2,10 @@ Session.setDefault('pageSize', 15);
 Session.setDefault('page', 0);
 //Session.setDefault('loading', true);
 Session.setDefault('tag', 'All');
+Session.setDefault('limit', 10);
+Session.setDefault('difference', -1)
+Session.setDefault('currentCount', -1)
+
 Template.questionForm.onCreated(function() {
 	var template = this;
 	template.input = new ReactiveVar('')
@@ -10,6 +14,14 @@ Template.questionForm.onCreated(function() {
 		var input = template.input.get()
 		template.output.set(input);
 	})
+
+})
+Template.questionsSearchBox.onCreated(function() {
+
+	var subscription = Meteor.subscribe('questionsBasicInfo', (Session.get('limit')))
+	if(Template.instance().subscriptionsReady()) {
+		Session.set('currentCount', Questions.find({}).count())
+	}
 
 })
 Template.discussions.onRendered(function() {
@@ -57,7 +69,6 @@ Template.discussions.onRendered(function() {
 
 	//clear current question search on rendered
 	QuestionsIndex.getComponentMethods().search('');
-
 });
 
 Template.discussions.events({
@@ -247,10 +258,7 @@ Template.questionsSearchBox.helpers({
 
 	questionsTags() {
 		var tagName = Session.get('tag').replace(/(\r\n|\n|\r)/gm, "<br />").split("<br />")
-
 		if(tagName[0] === "All") {
-
-
 			return Questions.find({}, {
 				sort: {
 					createdAt: -1
@@ -266,6 +274,13 @@ Template.questionsSearchBox.helpers({
 				}
 			}).fetch();
 		}
+	},
+
+	moreThanTenQuestions() {
+		return Questions.find({}).count() > 10
+	},
+	questionsNotEmpty() {
+		return Questions.find({}).count > 0
 	},
 
 	questionsIndex() {
@@ -295,7 +310,25 @@ Template.questionsSearchBox.events({
 			$('.ui.question.search').search('hide results');
 		}
 
-	}, 200)
+	}, 200),
+	'click #load': function(event, template) {
+		event.preventDefault()
+		var currentLimit = Session.get('limit');
+		var nextLimit = currentLimit + 10;
+		Session.set('limit', nextLimit)
+		var subscription = Meteor.subscribe('questionsBasicInfo', (nextLimit))
+
+		if(template.subscriptionsReady()) {
+			var newCount = Questions.find({}).count();
+			Session.set('difference', newCount - Session.get('currentCount'))
+			Session.set('currentCount', newCount)
+			if(Session.get('difference') == 0) {
+				$('#load').addClass('disabled');
+				sAlert.error('No more questions');
+			}
+		}
+
+	}
 });
 
 Template.filterTag.helpers({
