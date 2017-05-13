@@ -4,10 +4,12 @@ Session.setDefault('currentCountNews', -1)
 
 Template.newsFeed.onCreated(function() {
 
-	var subscription = Meteor.subscribe('newsFeedSpecific', (Meteor.userId()), (Session.get('limitNews')))
-	if(Template.instance().subscriptionsReady()) {
+	Deps.autorun(function(c) {
+		mysubscription = Meteor.subscribe('newsFeedSpecific', (Meteor.userId()), (Session.get('limitNews')))
+		Meteor.subscribe('questionsNewsFeed')
+
 		Session.set('currentCountNews', NewsFeed.find({}).count())
-	}
+	});
 })
 Template.newsFeed.events({
 

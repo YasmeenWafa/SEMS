@@ -18,10 +18,13 @@ Template.questionForm.onCreated(function() {
 })
 Template.questionsSearchBox.onCreated(function() {
 
-	var subscription = Meteor.subscribe('questionsBasicInfo', (Session.get('limit')))
-	if(Template.instance().subscriptionsReady()) {
+	Deps.autorun(function(c) {
+		mySub = Meteor.subscribe('questionsBasicInfo', Session.get('limit'));
 		Session.set('currentCount', Questions.find({}).count())
-	}
+
+	});
+
+
 
 })
 Template.discussions.onRendered(function() {
